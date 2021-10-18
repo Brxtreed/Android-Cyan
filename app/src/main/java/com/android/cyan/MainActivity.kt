@@ -1,35 +1,23 @@
 package com.android.cyan
 
-import android.Manifest
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.core.app.ActivityCompat.startActivityForResult
 
-import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.content.BroadcastReceiver
 import android.content.Context
 
 import android.content.Intent
 import android.content.IntentFilter
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.collect
 import androidx.core.app.ActivityCompat
 
-import android.content.pm.PackageManager
-import androidx.activity.result.contract.ActivityResultContracts
-
-import androidx.core.content.ContextCompat
-import androidx.core.app.ActivityCompat.startActivityForResult
-
 import android.location.LocationManager
 import android.provider.Settings
+import android.widget.*
 
 
 val REQUEST_COARSE_LOCATION = 101
@@ -38,9 +26,14 @@ val REQUEST_COARSE_LOCATION = 101
 @InternalCoroutinesApi
 class MainActivity : AppCompatActivity() {
     val cyanAdapter = CyanAdapter()
+    var deviceNameList = mutableListOf<String>()
+    lateinit var deviceAdapter: ArrayAdapter<String>
     lateinit var bluetoothStatus: TextView
+    lateinit var deviceListview: ListView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        deviceAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, deviceNameList)
 
         val permissions = arrayOf(android.Manifest.permission.BLUETOOTH)
         ActivityCompat.requestPermissions(this, permissions,0)
@@ -56,7 +49,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         var button = findViewById<Button>(R.id.button)
         var disableButton = findViewById<Button>(R.id.disable_button)
+        deviceListview = findViewById(R.id.device_list)
         bluetoothStatus = findViewById(R.id.bluetooth_status)
+        //deviceListview.adapter = deviceAdapter
 
         val filter = IntentFilter(BluetoothDevice.ACTION_FOUND)
         filter.addAction(BluetoothDevice.ACTION_NAME_CHANGED)
@@ -102,14 +97,6 @@ class MainActivity : AppCompatActivity() {
 
 
 
-
-
-
-
-
-
-
-
     private val receiver = object : BroadcastReceiver() {
 
         override fun onReceive(context: Context, intent: Intent) {
@@ -120,8 +107,17 @@ class MainActivity : AppCompatActivity() {
                     // object and its info from the Intent.
                     val device: BluetoothDevice? =
                         intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE)
-                    val deviceName = device?.name
+                    val deviceName = device?.name.toString()
                     val deviceHardwareAddress = device?.address
+                    deviceNameList.add(deviceName)
+                    //deviceAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, deviceNameList)
+
+                    //deviceNameList.add(deviceName)
+//                    deviceAdapter.setNotifyOnChange(true)
+//                    deviceAdapter.add("hi")
+                   // deviceAdapter.notifyDataSetChanged()
+                    deviceAdapter = ArrayAdapter(context, android.R.layout.simple_list_item_1, deviceNameList)
+                    deviceListview.adapter = deviceAdapter
                 println("Device info is ${deviceName} ${deviceHardwareAddress}")// MAC address
                 }
             }
