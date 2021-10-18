@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         lifecycleScope.launch {
-            cyanAdapter.latestNews
+            cyanAdapter.bluetoothStatus
                 .collect {
                     bluetoothStatus.text = it.toString()
                     // New location! Update the map
@@ -110,12 +110,6 @@ class MainActivity : AppCompatActivity() {
                     val deviceName = device?.name.toString()
                     val deviceHardwareAddress = device?.address
                     deviceNameList.add(deviceName)
-                    //deviceAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, deviceNameList)
-
-                    //deviceNameList.add(deviceName)
-//                    deviceAdapter.setNotifyOnChange(true)
-//                    deviceAdapter.add("hi")
-                   // deviceAdapter.notifyDataSetChanged()
                     deviceAdapter = ArrayAdapter(context, android.R.layout.simple_list_item_1, deviceNameList)
                     deviceListview.adapter = deviceAdapter
                 println("Device info is ${deviceName} ${deviceHardwareAddress}")// MAC address
