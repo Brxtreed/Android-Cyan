@@ -4,6 +4,8 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/brxtr/AndroidStudioProjects/AndroidCyan/app/src/main/res/layout/activity_main.xml" value="0.28442028985507245" />
+        <entry key="..\:/Users/brxtr/AndroidStudioProjects/AndroidCyan/app/src/main/res/layout/chat_message_cell_reciever.xml" value="0.33" />
+        <entry key="..\:/Users/brxtr/AndroidStudioProjects/AndroidCyan/app/src/main/res/layout/chat_message_cell_user.xml" value="0.5" />
         <entry key="..\:/Users/brxtr/AndroidStudioProjects/AndroidCyan/app/src/main/res/layout/chat_view.xml" value="0.19479166666666667" />
       </map>
     </option>
