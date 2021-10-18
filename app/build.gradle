@@ -9,7 +9,7 @@ android {
     defaultConfig {
         applicationId "com.android.cyan"
         minSdk 21
-        targetSdk 30
+        targetSdk 23
         versionCode 1
         versionName "1.0"
 
