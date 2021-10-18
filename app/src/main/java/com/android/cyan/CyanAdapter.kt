@@ -15,7 +15,7 @@ class CyanAdapter {
         return bluetoothAdapter
     }
 
-    val latestNews: Flow<Boolean> = flow {
+    val bluetoothStatus: Flow<Boolean> = flow {
         while(true) {
             val isEnabled = bluetoothAdapter.isEnabled
             emit(isEnabled) // Emits the result of the request to the flow
