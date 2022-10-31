@@ -18,5 +18,14 @@
         android:id="@+id/deviceViewFragment"
         android:name="fragments.DeviceViewFragment"
         android:label="fragment_device_view"
-        tools:layout="@layout/fragment_device_view" />
+        tools:layout="@layout/fragment_device_view" >
+        <action
+            android:id="@+id/action_deviceViewFragment_to_chatViewFragment"
+            app:destination="@id/chatViewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/chatViewFragment"
+        android:name="com.android.cyan.ChatViewFragment"
+        android:label="fragment_chat_view"
+        tools:layout="@layout/fragment_chat_view" />
 </navigation>
