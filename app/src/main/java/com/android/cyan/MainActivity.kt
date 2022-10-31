@@ -1,5 +1,6 @@
 package com.android.cyan
 
+import BluetoothServerThread
 import DeviceAdapter
 import android.Manifest
 import android.annotation.SuppressLint
@@ -7,14 +8,12 @@ import android.bluetooth.BluetoothAdapter.ACTION_DISCOVERY_FINISHED
 import android.bluetooth.BluetoothAdapter.ACTION_DISCOVERY_STARTED
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothManager
-import android.bluetooth.BluetoothServerSocket
 import android.bluetooth.BluetoothSocket
 import android.content.BroadcastReceiver
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -68,7 +67,7 @@ class MainActivity : AppCompatActivity() {
         bindBroadcast()
         initListeners()
 
-        val thread = AcceptThread()
+        val thread = BluetoothServerThread(bluetoothAdapter)
         thread.start()
 
 //        lifecycleScope.launch {
@@ -232,45 +231,6 @@ class MainActivity : AppCompatActivity() {
                     enableButton.isEnabled = false
                     disableButton.isEnabled = true
                 }
-            }
-        }
-    }
-
-    @SuppressLint("MissingPermission")
-    private inner class AcceptThread : Thread() {
-
-        private val mmServerSocket: BluetoothServerSocket? by lazy(LazyThreadSafetyMode.NONE) {
-            bluetoothAdapter?.adapter?.listenUsingInsecureRfcommWithServiceRecord(
-                "test",
-                UUID.fromString("9b05086f-543e-404d-93bf-9f32492f5ffd")
-            )
-        }
-
-        override fun run() {
-            // Keep listening until exception occurs or a socket is returned.
-            var shouldLoop = true
-            while (shouldLoop) {
-                val socket: BluetoothSocket? = try {
-                    mmServerSocket?.accept()
-                } catch (e: IOException) {
-                    Log.e(TAG, "Socket's accept() method failed", e)
-                    shouldLoop = false
-                    null
-                }
-                socket?.also {
-                    //manageMyConnectedSocket(it)
-                    mmServerSocket?.close()
-                    shouldLoop = false
-                }
-            }
-        }
-
-        // Closes the connect socket and causes the thread to finish.
-        fun cancel() {
-            try {
-                mmServerSocket?.close()
-            } catch (e: IOException) {
-                Log.e(TAG, "Could not close the connect socket", e)
             }
         }
     }
